@@ -11,9 +11,9 @@ if [ -z "$KUBE_CONFIG" ]; then
   exit 1
 fi
 
-# Use the KUBE_CONFIG environment variable to authenticate kubectl
+# Decode KUBE_CONFIG from base64 and use it to authenticate kubectl
 echo "Setting up Kubernetes config..."
-echo "$KUBE_CONFIG" > kubeconfig
+echo "$KUBE_CONFIG" | base64 --decode > kubeconfig
 export KUBECONFIG=$(pwd)/kubeconfig
 
 # Ensure the deployment YAML file exists
