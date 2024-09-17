@@ -3,7 +3,7 @@
 # Variables for Kubernetes config and container registry
 CONTAINER_REGISTRY=$CONTAINER_REGISTRY
 KUBE_CONFIG=$KUBE_CONFIG
-VERSION=$VERSION
+#VERSION=$VERSION
 
 # Check if KUBE_CONFIG is set before proceeding
 if [ -z "$KUBE_CONFIG" ]; then
