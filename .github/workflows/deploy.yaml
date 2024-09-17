@@ -15,10 +15,7 @@ on:
     branches:
       - main
     
-  #
-  # Allows deployment to be invoked manually through the GitHub Actions user interface.
-  #
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
 
@@ -56,10 +53,15 @@ jobs:
       #
       # https://github.com/marketplace/actions/kubernetes-cli-kubectl
       #
-      - uses: tale/kubectl-action@v1
+      - name: Install kubectl and configure cluster access
+        uses: tale/kubectl-action@v1
         with:
           base64-kube-config: ${{ secrets.KUBE_CONFIG }}
           kubectl-version: v1.30.2
+          
+      # Verify that the Kubernetes API is accessible.
+      - name: Check Kubernetes cluster status
+        run: kubectl cluster-info
       
       #
       # Expands the configuration template and deploys the microservice.
