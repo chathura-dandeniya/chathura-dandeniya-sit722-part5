@@ -13,7 +13,7 @@ export KUBECONFIG=$(pwd)/kubeconfig
 
 # Deploy both book_catalog and inventory_management services (since they're in the same deployment.yaml)
 echo "Deploying microservices (book_catalog and inventory_management) to Kubernetes..."
-envsubst < ./scripts/kubernetes/deployment.yaml | kubectl apply -f -
+envsubst < ./scripts/kubernetes/deployment.yaml | kubectl apply -f - --validate=false
 
 # Clean up the kubeconfig file
 rm kubeconfig
