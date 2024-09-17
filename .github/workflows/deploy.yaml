@@ -5,7 +5,7 @@
 # For real use you might want to restrict this to the "prod" branch.
 #
 
-name: Deploy microservice
+name: Deploy Library microservice Part 5
 
 on:
   #
@@ -56,7 +56,7 @@ jobs:
       - uses: tale/kubectl-action@v1
         with:
           base64-kube-config: ${{ secrets.KUBE_CONFIG }}
-          kubectl-version: v1.24.2
+          kubectl-version: v1.30.2
       
       #
       # Expands the configuration template and deploys the microservice.
