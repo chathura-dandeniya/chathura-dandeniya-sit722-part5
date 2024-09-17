@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  book_catalog:
+    build: ./book_catalog
+    ports:
+      - "8001:8001"
+    environment:
+      DATABASE_URL: postgresql://librarypart05_user:HWKfpdZlCLZU0yDnkXSUzyj76PXEfYGg@dpg-crkdq03v2p9s73b5s4p0-a.oregon-postgres.render.com/librarypart05
+
+  inventory_management:
+    build: ./inventory_management
+    ports:
+      - "8002:8002"
+    environment:
+      DATABASE_URL: postgresql://librarypart05_user:HWKfpdZlCLZU0yDnkXSUzyj76PXEfYGg@dpg-crkdq03v2p9s73b5s4p0-a.oregon-postgres.render.com/librarypart05
