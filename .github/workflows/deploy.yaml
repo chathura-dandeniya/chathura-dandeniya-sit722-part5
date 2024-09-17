@@ -39,14 +39,14 @@ jobs:
       #
       # Builds the Docker image.
       #
-      - name: Build
-        run: ./scripts/build-image.sh
+      #- name: Build
+      #  run: ./scripts/build-image.sh
 
       #
       # Publishes the Docker image to the container registry.
       #
-      - name: Publish
-        run: ./scripts/push-image.sh
+      #- name: Publish
+      #  run: ./scripts/push-image.sh
 
       #
       # Installs Kubectl and connects it to the cluster.
@@ -58,7 +58,7 @@ jobs:
         with:
           base64-kube-config: ${{ secrets.KUBE_CONFIG }}
           kubectl-version: v1.30.2
-          
+
       # Verify that the Kubernetes API is accessible.
       - name: Check Kubernetes cluster status
         run: kubectl cluster-info
