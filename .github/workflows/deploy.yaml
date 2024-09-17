@@ -27,6 +27,7 @@ jobs:
       CONTAINER_REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
       REGISTRY_UN: ${{ secrets.REGISTRY_UN }}
       REGISTRY_PW: ${{ secrets.REGISTRY_PW  }}
+      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG  }}
 
     steps:
       
