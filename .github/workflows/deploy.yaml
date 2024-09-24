@@ -36,6 +36,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       #KUBE_CONFIG: ${{ secrets.KUBE_CONFIG  }}
+      TF_LOG: DEBUG
 
     steps:
       
@@ -68,8 +69,8 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      #- name: Terraform Plan
-      #  run: terraform plan
+      - name: Terraform Plan
+        run: terraform plan
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
