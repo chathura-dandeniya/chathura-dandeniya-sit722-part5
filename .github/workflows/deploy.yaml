@@ -51,11 +51,8 @@ jobs:
 
       - name: Terraform Plan to generate and capture the infrastructure plan
         id: tf_plan
-        run: terraform plan -out=tfplan \
-          -var="ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" \
-          -var="ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" \
-          -var="ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
-          -var="ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}"
+        run: terraform plan -out=tfplan -var="ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" -var="ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" -var="ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var="ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}"
+
         continue-on-error: false  # Fails if the plan encounters an error
 
 
