@@ -3,7 +3,7 @@
 variable "app_name" {
   description = "Name of the application or Kubernetes cluster"
   type        = string
-  default     = "librarypart05"
+  default     = "librarypart05withterraform"
 }
 
 variable "location" {
