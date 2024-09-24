@@ -42,20 +42,20 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Export Environment Variables for Terraform
-        run: |
-          echo "TF_VAR_ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" >> $GITHUB_ENV
-          echo "TF_VAR_ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}" >> $GITHUB_ENV
+     # - name: Export Environment Variables for Terraform
+     #   run: |
+     #     echo "TF_VAR_ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" >> $GITHUB_ENV
+     #     echo "TF_VAR_ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" >> $GITHUB_ENV
+     #     echo "TF_VAR_ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+     #     echo "TF_VAR_ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}" >> $GITHUB_ENV
 
-      - name: Terraform Plan to generate and capture the infrastructure plan
-        id: tf_plan
-        run: terraform plan -out=tfplan -var="ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" -var="ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" -var="ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var="ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}"
-        continue-on-error: false  # Fails if the plan encounters an error
+      #- name: Terraform Plan to generate and capture the infrastructure plan
+      #  id: tf_plan
+      #  run: terraform plan -out=tfplan -var="ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" -var="ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" -var="ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var="ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}"
+      #  continue-on-error: false  # Fails if the plan encounters an error
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+      #- name: Terraform Apply
+      #  run: terraform apply -auto-approve tfplan
 
       # Capture Terraform Outputs
       - name: Capture Terraform Outputs
@@ -75,31 +75,31 @@ jobs:
           echo "REGISTRY_PW=${{ steps.tf_output.outputs.registry_password }}" >> $GITHUB_ENV
 
       # Build the Docker image
-      - name: Build Docker Image
-        run: ./scripts/build-image.sh
-        continue-on-error: false  # Fails if the build process fails
+      #- name: Build Docker Image
+      #  run: ./scripts/build-image.sh
+      #  continue-on-error: false  # Fails if the build process fails
 
       # Publish the Docker image to the container registry
-      - name: Publish Docker Image
-        run: ./scripts/push-image.sh
-        continue-on-error: false  # Fails if the push fails
+      #- name: Publish Docker Image
+      #  run: ./scripts/push-image.sh
+      #  continue-on-error: false  # Fails if the push fails
 
       # Install kubectl and configure access to Kubernetes cluster
-      - name: Install kubectl and Configure Cluster Access
-        uses: tale/kubectl-action@v1
-        with:
-          base64-kube-config: ${{ secrets.KUBE_CONFIG }}
-          kubectl-version: v1.30.2
+      #- name: Install kubectl and Configure Cluster Access
+      #  uses: tale/kubectl-action@v1
+      #  with:
+      #    base64-kube-config: ${{ secrets.KUBE_CONFIG }}
+      #    kubectl-version: v1.30.2
 
       # Verify Kubernetes API access
-      - name: Check Kubernetes Cluster Status
-        run: kubectl cluster-info
-        continue-on-error: false  # Fails if cluster info can't be fetched
+      #- name: Check Kubernetes Cluster Status
+      #  run: kubectl cluster-info
+      #  continue-on-error: false  # Fails if cluster info can't be fetched
 
       # Deploy the microservice to Kubernetes
-      - name: Deploy Microservice
-        run: ./scripts/deploy.sh
-        continue-on-error: false  # Fails if the deployment fails
+      #- name: Deploy Microservice
+      #  run: ./scripts/deploy.sh
+      #  continue-on-error: false  # Fails if the deployment fails
 
       # Optional: Cleanup (commented out, can be used if needed)
       #- name: Delete resources
