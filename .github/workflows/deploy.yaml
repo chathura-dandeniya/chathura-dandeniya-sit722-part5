@@ -31,11 +31,11 @@ jobs:
       #CONTAINER_REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
       #REGISTRY_UN: ${{ secrets.REGISTRY_UN }}
       #REGISTRY_PW: ${{ secrets.REGISTRY_PW  }}
-      #ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      #ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      #ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      #ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG  }}
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      #KUBE_CONFIG: ${{ secrets.KUBE_CONFIG  }}
 
     steps:
       
@@ -66,6 +66,19 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
+
+      - name: Retrieve AKS credentials
+        run: |
+          az aks get-credentials --resource-group deakinuni --name librarypart05 --overwrite-existing
+          cat ~/.kube/config | base64 | tr -d '\n' > kubeconfig.txt
+
+      - name: Set KUBE_CONFIG environment variable
+        run: |
+          echo "KUBE_CONFIG=$(cat kubeconfig.txt)" >> $GITHUB_ENV
+
+      - name: Verify Kubernetes Cluster Access
+        run: |
+          kubectl cluster-info
 
       # Capture Terraform Outputs for registry details (username, password, registry URL)
       - name: Capture Terraform Outputs
