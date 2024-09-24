@@ -24,9 +24,13 @@ jobs:
     
     env:
       #VERSION: ${{ github.sha }}
-      CONTAINER_REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
-      REGISTRY_UN: ${{ secrets.REGISTRY_UN }}
-      REGISTRY_PW: ${{ secrets.REGISTRY_PW  }}
+      #CONTAINER_REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
+      #REGISTRY_UN: ${{ secrets.REGISTRY_UN }}
+      #REGISTRY_PW: ${{ secrets.REGISTRY_PW  }}
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG  }}
 
     steps:
@@ -34,22 +38,63 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE.
       - uses: actions/checkout@v3
 
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          client-secret: ${{ secrets.ARM_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+
+      # Specify the version of Terraform to use
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 2.9.5
+
       - name: Set execute permissions
         run: chmod +x ./scripts/*.sh
+      
+      # Run Terraform Init, Plan, and Apply to create infrastructure and capture outputs
+      - name: Terraform Init
+        run: terraform init
 
-      #
-      # Builds the Docker image.
-      #
-      #- name: Build
-      #  run: ./scripts/build-image.sh
+      - name: Terraform Plan
+        run: terraform plan
 
-      #
-      # Publishes the Docker image to the container registry.
-      #
-      #- name: Publish
-      #  run: ./scripts/push-image.sh
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
 
-      #
+      # Capture Terraform Outputs for registry details (username, password, registry URL)
+      - name: Capture Terraform Outputs
+        id: tf_output
+        run: |
+          echo "::set-output name=registry_username::$(terraform output -raw registry_username)"
+          echo "::set-output name=registry_password::$(terraform output -raw registry_password)"
+          echo "::set-output name=registry_login_server::$(terraform output -raw registry_login_server)"
+
+      # Set environment variables for Container Registry details dynamically
+      - name: Set Container Registry Environment Variables
+        run: |
+          echo "Setting container registry environment variables..."
+          echo "CONTAINER_REGISTRY=${{ steps.tf_output.outputs.registry_login_server }}" >> $GITHUB_ENV
+          echo "REGISTRY_UN=${{ steps.tf_output.outputs.registry_username }}" >> $GITHUB_ENV
+          echo "REGISTRY_PW=${{ steps.tf_output.outputs.registry_password }}" >> $GITHUB_ENV
+
+      
+     #  Builds the Docker image.
+      
+      - name: Build
+        run: ./scripts/build-image.sh
+
+      
+     #  Publishes the Docker image to the container registry.
+      
+      - name: Publish
+        run: ./scripts/push-image.sh
+
+      
       # Installs Kubectl and connects it to the cluster.
       #
       # https://github.com/marketplace/actions/kubernetes-cli-kubectl
@@ -67,8 +112,8 @@ jobs:
       #
       # Expands the configuration template and deploys the microservice.
       #
-      #- name: Deploy
-      #  run: ./scripts/deploy.sh
+      - name: Deploy
+        run: ./scripts/deploy.sh
 
-      - name: Delete
-        run: ./scripts/delete.sh
+      #- name: Delete
+      #  run: ./scripts/delete.sh
