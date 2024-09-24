@@ -21,24 +21,20 @@ variable "kubernetes_version" {
 variable "ARM_SUBSCRIPTION_ID" {
   type        = string
   description = "Azure subscription ID"
-  default     = "${env.ARM_SUBSCRIPTION_ID}"
 }
 
 variable "ARM_CLIENT_ID" {
   type        = string
   description = "Azure Client ID for authentication"
-  default     = "${env.ARM_CLIENT_ID}"
 }
 
 variable "ARM_CLIENT_SECRET" {
   type        = string
   description = "Azure Client Secret for authentication"
   sensitive   = true
-  default     = "${env.ARM_CLIENT_SECRET}"
 }
 
 variable "ARM_TENANT_ID" {
   type        = string
   description = "Azure Tenant ID"
-  default     = "${env.ARM_TENANT_ID}"
 }
