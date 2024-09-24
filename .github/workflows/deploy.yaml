@@ -44,15 +44,19 @@ jobs:
 
       - name: Export Environment Variables for Terraform
         run: |
-          export ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }} >> $GITHUB_ENV
-          export ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }} >> $GITHUB_ENV
-          export ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }} >> $GITHUB_ENV 
-          export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }} >> $GITHUB_ENV
+          echo "TF_VAR_ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "TF_VAR_ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}" >> $GITHUB_ENV
 
       # Terraform Plan to generate and capture the infrastructure plan
       - name: Terraform Plan
         id: tf_plan
-        run: terraform plan -out=tfplan
+        run: terraform plan -out=tfplan \
+          -var "ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" \
+          -var "ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" \
+          -var "ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
+          -var "ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}"
         continue-on-error: false  # Fails if the plan encounters an error
 
       # Capture Terraform Outputs
