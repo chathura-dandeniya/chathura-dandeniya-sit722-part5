@@ -40,7 +40,7 @@ jobs:
         with:
           terraform_wrapper: false
 
-       Terraform Init to initialize working directory
+      # Terraform Init to initialize working directory
       - name: Terraform Init
         run: terraform init
 
