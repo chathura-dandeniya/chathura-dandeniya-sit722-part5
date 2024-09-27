@@ -44,20 +44,20 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-     # - name: Export Environment Variables for Terraform
-     #   run: |
-     #     echo "TF_VAR_ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" >> $GITHUB_ENV
-     #     echo "TF_VAR_ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" >> $GITHUB_ENV
-     #     echo "TF_VAR_ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
-     #     echo "TF_VAR_ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}" >> $GITHUB_ENV
+      - name: Export Environment Variables for Terraform
+        run: |
+          echo "TF_VAR_ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "TF_VAR_ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}" >> $GITHUB_ENV
 
-     # - name: Terraform Plan to generate and capture the infrastructure plan
-     #   id: tf_plan
-     #   run: terraform plan -out=tfplan -var="ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" -var="ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" -var="ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var="ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}"
-     #   continue-on-error: false  # Fails if the plan encounters an error
+      - name: Terraform Plan to generate and capture the infrastructure plan
+        id: tf_plan
+        run: terraform plan -out=tfplan -var="ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" -var="ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" -var="ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var="ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}"
+        continue-on-error: false  # Fails if the plan encounters an error
 
-     # - name: Terraform Apply
-     #   run: terraform apply -auto-approve tfplan
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
 
       - name: Retrieve AKS credentials
         run: |
@@ -87,10 +87,9 @@ jobs:
       - name: Capture Terraform Outputs
         id: tf_output
         run: |
-          echo "::set-output name=CONTAINER_REGISTRY::$(terraform output -raw registry_login_server)"
-          echo "::set-output name=REGISTRY_UN::$(terraform output -raw registry_username)"
-          echo "::set-output name=REGISTRY_PW::$(terraform output -raw registry_password)"
-
+          echo "CONTAINER_REGISTRY=$(terraform output -raw registry_login_server)" >> $GITHUB_ENV
+          echo "REGISTRY_UN=$(terraform output -raw registry_username)" >> $GITHUB_ENV
+          echo "REGISTRY_PW=$(terraform output -raw registry_password)" >> $GITHUB_ENV
         continue-on-error: false  # Fails if output capture fails
 
       # Set environment variables dynamically from GitHub Secrets
