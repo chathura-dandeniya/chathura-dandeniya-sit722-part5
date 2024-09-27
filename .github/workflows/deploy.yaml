@@ -101,19 +101,19 @@ jobs:
           echo "REGISTRY_PW=${{ secrets.REGISTRY_PW }}" >> $GITHUB_ENV
 
       # Build the Docker image
-      #- name: Build Docker Image
-      #  run: ./scripts/build-image.sh
-      #  continue-on-error: false  # Fails if the build process fails
+      - name: Build Docker Image
+        run: ./scripts/build-image.sh
+        continue-on-error: false  # Fails if the build process fails
 
       # Publish the Docker image to the container registry
-      #- name: Publish Docker Image
-      #  run: ./scripts/push-image.sh
-      #  continue-on-error: false  # Fails if the push fails
+      - name: Publish Docker Image
+        run: ./scripts/push-image.sh
+        continue-on-error: false  # Fails if the push fails
 
       # Deploy the microservice to Kubernetes
-      #- name: Deploy Microservice
-      #  run: ./scripts/deploy.sh
-      #  continue-on-error: false  # Fails if the deployment fails
+      - name: Deploy Microservice
+        run: ./scripts/deploy.sh
+        continue-on-error: false  # Fails if the deployment fails
 
       # Optional: Cleanup (commented out, can be used if needed)
       #- name: Delete resources
