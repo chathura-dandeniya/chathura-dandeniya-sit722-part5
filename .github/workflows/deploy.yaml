@@ -84,21 +84,22 @@ jobs:
         continue-on-error: false  # Fails if cluster info can't be fetched
 
       # Capture Terraform Outputs
-      #- name: Capture Terraform Outputs
-      #  id: tf_output
-      #  run: |
-      #    echo "::set-output name=registry_username::$(terraform output -raw registry_username)"
-      #    echo "::set-output name=registry_password::$(terraform output -raw registry_password)"
-      #    echo "::set-output name=registry_login_server::$(terraform output -raw registry_login_server)"
-      #  continue-on-error: false  # Fails if output capture fails
+      - name: Capture Terraform Outputs
+        id: tf_output
+        run: |
+          echo "::set-output name=CONTAINER_REGISTRY::$(terraform output -raw registry_login_server)"
+          echo "::set-output name=REGISTRY_UN::$(terraform output -raw registry_username)"
+          echo "::set-output name=REGISTRY_PW::$(terraform output -raw registry_password)"
 
-      # Set environment variables dynamically based on Terraform outputs
-      #- name: Set Container Registry Environment Variables
-      #  run: |
-      #    echo "Setting container registry environment variables..."
-      #    echo "CONTAINER_REGISTRY=${{ steps.tf_output.outputs.registry_login_server }}" >> $GITHUB_ENV
-      #    echo "REGISTRY_UN=${{ steps.tf_output.outputs.registry_username }}" >> $GITHUB_ENV
-      #    echo "REGISTRY_PW=${{ steps.tf_output.outputs.registry_password }}" >> $GITHUB_ENV
+        continue-on-error: false  # Fails if output capture fails
+
+      # Set environment variables dynamically from GitHub Secrets
+      - name: Set Container Registry Environment Variables
+        run: |
+          echo "Setting container registry environment variables..."
+          echo "CONTAINER_REGISTRY=${{ secrets.CONTAINER_REGISTRY }}" >> $GITHUB_ENV
+          echo "REGISTRY_UN=${{ secrets.REGISTRY_UN }}" >> $GITHUB_ENV
+          echo "REGISTRY_PW=${{ secrets.REGISTRY_PW }}" >> $GITHUB_ENV
 
       # Build the Docker image
       #- name: Build Docker Image
