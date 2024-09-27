@@ -19,7 +19,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      #TF_LOG: DEBUG  # Enable detailed logs for Terraform
+      TF_LOG: DEBUG  # Enable detailed logs for Terraform
 
     steps:
       # Check out the repository code
@@ -85,16 +85,16 @@ jobs:
       #  continue-on-error: false  # Fails if the push fails
 
       # Install kubectl and configure access to Kubernetes cluster
-      #- name: Install kubectl and Configure Cluster Access
-      #  uses: tale/kubectl-action@v1
-      #  with:
-      #    base64-kube-config: ${{ secrets.KUBE_CONFIG }}
-      #    kubectl-version: v1.30.2
+      - name: Install kubectl and Configure Cluster Access
+        uses: tale/kubectl-action@v1
+        with:
+          base64-kube-config: ${{ secrets.KUBE_CONFIG }}
+          kubectl-version: v1.30.2
 
       # Verify Kubernetes API access
-      #- name: Check Kubernetes Cluster Status
-      #  run: kubectl cluster-info
-      #  continue-on-error: false  # Fails if cluster info can't be fetched
+      - name: Check Kubernetes Cluster Status
+        run: kubectl cluster-info
+        continue-on-error: false  # Fails if cluster info can't be fetched
 
       # Deploy the microservice to Kubernetes
       #- name: Deploy Microservice
