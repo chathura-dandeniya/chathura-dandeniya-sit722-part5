@@ -103,20 +103,24 @@ jobs:
           echo "REGISTRY_UN=${{ secrets.REGISTRY_UN }}" >> $GITHUB_ENV
           echo "REGISTRY_PW=${{ secrets.REGISTRY_PW }}" >> $GITHUB_ENV
 
+      - name: Debug container registry environment variable
+        run: echo "CONTAINER_REGISTRY is $CONTAINER_REGISTRY"
+
       - name: Log in to Azure Container Registry
         run: |
           az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
+          az account show
           az acr login --name $CONTAINER_REGISTRY
 
       # Build the Docker image
-      - name: Build Docker Image
-        run: ./scripts/build-image.sh
-        continue-on-error: false  # Fails if the build process fails
+      #- name: Build Docker Image
+      #  run: ./scripts/build-image.sh
+      #  continue-on-error: false  # Fails if the build process fails
 
       # Publish the Docker image to the container registry
-      - name: Publish Docker Image
-        run: ./scripts/push-image.sh
-        continue-on-error: false  # Fails if the push fails
+      #- name: Publish Docker Image
+      #  run: ./scripts/push-image.sh
+      #  continue-on-error: false  # Fails if the push fails
 
       # Deploy the microservice to Kubernetes
      # - name: Deploy Microservice
