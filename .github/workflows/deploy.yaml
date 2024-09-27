@@ -20,6 +20,8 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       TF_LOG: DEBUG  # Enable detailed logs for Terraform
+      ACTIONS_RUNNER_DEBUG: true
+      ACTIONS_STEP_DEBUG: true
 
     steps:
       # Check out the repository code
@@ -38,29 +40,31 @@ jobs:
         with:
           terraform_wrapper: false
 
-      # Terraform Init to initialize working directory
+       Terraform Init to initialize working directory
       - name: Terraform Init
         run: terraform init
 
-      - name: Export Environment Variables for Terraform
-        run: |
-          echo "TF_VAR_ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" >> $GITHUB_ENV
-          echo "TF_VAR_ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}" >> $GITHUB_ENV
+     # - name: Export Environment Variables for Terraform
+     #   run: |
+     #     echo "TF_VAR_ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" >> $GITHUB_ENV
+     #     echo "TF_VAR_ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" >> $GITHUB_ENV
+     #     echo "TF_VAR_ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+     #     echo "TF_VAR_ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}" >> $GITHUB_ENV
 
-      - name: Terraform Plan to generate and capture the infrastructure plan
-        id: tf_plan
-        run: terraform plan -out=tfplan -var="ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" -var="ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" -var="ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var="ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}"
-        continue-on-error: false  # Fails if the plan encounters an error
+     # - name: Terraform Plan to generate and capture the infrastructure plan
+     #   id: tf_plan
+     #   run: terraform plan -out=tfplan -var="ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" -var="ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" -var="ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var="ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}"
+     #   continue-on-error: false  # Fails if the plan encounters an error
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+     # - name: Terraform Apply
+     #   run: terraform apply -auto-approve tfplan
 
       - name: Retrieve AKS credentials
         run: |
           az aks get-credentials --resource-group deakinuni --name librarypart05withterraform --overwrite-existing
           cat ~/.kube/config | base64 | tr -d '\n' > kubeconfig.txt
+          echo "KUBECONFIG:"
+          cat kubeconfig.txt
 
       - name: Set KUBE_CONFIG environment variable
         run: |
