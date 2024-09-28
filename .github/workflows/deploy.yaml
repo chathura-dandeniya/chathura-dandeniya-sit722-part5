@@ -126,10 +126,10 @@ jobs:
         run: sleep 10
       
       # Attach ACR to AKS
-      - name: Attach ACR to AKS
-        run: |
-          AKS_NODE_RG=$(az aks show --resource-group deakinuni --name librarypart05withterraform --query nodeResourceGroup -o tsv)
-          az aks update -n librarypart05withterraform -g $AKS_NODE_RG --attach-acr librarypart05withterraform
+      #- name: Attach ACR to AKS
+      #  run: |
+      #    AKS_NODE_RG=$(az aks show --resource-group deakinuni --name librarypart05withterraform --query nodeResourceGroup -o tsv)
+      #    az aks update -n librarypart05withterraform -g $AKS_NODE_RG --attach-acr librarypart05withterraform
 
 
       # Deploy the microservice to Kubernetes
