@@ -24,4 +24,5 @@ WORKDIR /
 EXPOSE 8001
 
 # Run the FastAPI app with Uvicorn from outside the "app" directory
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
+#CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
+CMD ["python3", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]

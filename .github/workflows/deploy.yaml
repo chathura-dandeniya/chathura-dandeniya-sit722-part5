@@ -54,13 +54,13 @@ jobs:
           echo "TF_VAR_ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}" >> $GITHUB_ENV
 
-      - name: Terraform Plan to generate and capture the infrastructure plan
-        id: tf_plan
-        run: terraform plan -out=tfplan -var="ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" -var="ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" -var="ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var="ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}"
-        continue-on-error: false  # Fails if the plan encounters an error
+      #- name: Terraform Plan to generate and capture the infrastructure plan
+      #  id: tf_plan
+      #  run: terraform plan -out=tfplan -var="ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" -var="ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" -var="ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var="ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}"
+      #  continue-on-error: false  # Fails if the plan encounters an error
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+      #- name: Terraform Apply
+      #  run: terraform apply -auto-approve tfplan
 
       - name: Retrieve AKS credentials
         run: |
@@ -133,9 +133,9 @@ jobs:
 
 
       # Deploy the microservice to Kubernetes
-      - name: Deploy Microservice
-        run: ./scripts/deploy.sh
-        continue-on-error: false  # Fails if the deployment fails
+      #- name: Deploy Microservice
+      #  run: ./scripts/deploy.sh
+      #  continue-on-error: false  # Fails if the deployment fails
 
       # Optional: Cleanup (commented out, can be used if needed)
       #- name: Delete resources
