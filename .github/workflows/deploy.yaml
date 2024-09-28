@@ -96,12 +96,12 @@ jobs:
         continue-on-error: false  # Fails if output capture fails
 
       # Set environment variables dynamically from GitHub Secrets
-      - name: Set Container Registry Environment Variables
-        run: |
-          echo "Setting container registry environment variables..."
-          echo "CONTAINER_REGISTRY=${{ secrets.CONTAINER_REGISTRY }}" >> $GITHUB_ENV
-          echo "REGISTRY_UN=${{ secrets.REGISTRY_UN }}" >> $GITHUB_ENV
-          echo "REGISTRY_PW=${{ secrets.REGISTRY_PW }}" >> $GITHUB_ENV
+      #- name: Set Container Registry Environment Variables
+      #  run: |
+      #    echo "Setting container registry environment variables..."
+      #    echo "CONTAINER_REGISTRY=${{ secrets.CONTAINER_REGISTRY }}" >> $GITHUB_ENV
+      #    echo "REGISTRY_UN=${{ secrets.REGISTRY_UN }}" >> $GITHUB_ENV
+      #    echo "REGISTRY_PW=${{ secrets.REGISTRY_PW }}" >> $GITHUB_ENV
 
       - name: Debug container registry environment variable
         run: echo "CONTAINER_REGISTRY is $CONTAINER_REGISTRY"
