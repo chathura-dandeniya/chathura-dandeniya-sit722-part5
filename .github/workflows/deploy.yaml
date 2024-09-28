@@ -54,13 +54,13 @@ jobs:
           echo "TF_VAR_ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}" >> $GITHUB_ENV
 
-      #- name: Terraform Plan to generate and capture the infrastructure plan
-      #  id: tf_plan
-      #  run: terraform plan -out=tfplan -var="ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" -var="ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" -var="ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var="ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}"
-      #  continue-on-error: false  # Fails if the plan encounters an error
+      - name: Terraform Plan to generate and capture the infrastructure plan
+        id: tf_plan
+        run: terraform plan -out=tfplan -var="ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" -var="ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" -var="ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var="ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}"
+        continue-on-error: false  # Fails if the plan encounters an error
 
-      #- name: Terraform Apply
-      #  run: terraform apply -auto-approve tfplan
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
 
       - name: Retrieve AKS credentials
         run: |
@@ -87,21 +87,21 @@ jobs:
         continue-on-error: false  # Fails if cluster info can't be fetched
 
       # Capture Terraform Outputs
-      #- name: Capture Terraform Outputs
-      #  id: tf_output
-      #  run: |
-      #    echo "CONTAINER_REGISTRY=$(terraform output -raw registry_login_server)" >> $GITHUB_ENV
-      #    echo "REGISTRY_UN=$(terraform output -raw registry_username)" >> $GITHUB_ENV
-      #    echo "REGISTRY_PW=$(terraform output -raw registry_password)" >> $GITHUB_ENV
-      #  continue-on-error: false  # Fails if output capture fails
+      - name: Capture Terraform Outputs
+        id: tf_output
+        run: |
+          echo "CONTAINER_REGISTRY=$(terraform output -raw registry_login_server)" >> $GITHUB_ENV
+          echo "REGISTRY_UN=$(terraform output -raw registry_username)" >> $GITHUB_ENV
+          echo "REGISTRY_PW=$(terraform output -raw registry_password)" >> $GITHUB_ENV
+        continue-on-error: false  # Fails if output capture fails
 
       # Set environment variables dynamically from GitHub Secrets
-      #- name: Set Container Registry Environment Variables
-      #  run: |
-      #    echo "Setting container registry environment variables..."
-      #    echo "CONTAINER_REGISTRY=${{ secrets.CONTAINER_REGISTRY }}" >> $GITHUB_ENV
-      #    echo "REGISTRY_UN=${{ secrets.REGISTRY_UN }}" >> $GITHUB_ENV
-      #    echo "REGISTRY_PW=${{ secrets.REGISTRY_PW }}" >> $GITHUB_ENV
+      - name: Set Container Registry Environment Variables
+        run: |
+          echo "Setting container registry environment variables..."
+          echo "CONTAINER_REGISTRY=${{ secrets.CONTAINER_REGISTRY }}" >> $GITHUB_ENV
+          echo "REGISTRY_UN=${{ secrets.REGISTRY_UN }}" >> $GITHUB_ENV
+          echo "REGISTRY_PW=${{ secrets.REGISTRY_PW }}" >> $GITHUB_ENV
 
       - name: Debug container registry environment variable
         run: echo "CONTAINER_REGISTRY is $CONTAINER_REGISTRY"
@@ -133,9 +133,9 @@ jobs:
 
 
       # Deploy the microservice to Kubernetes
-      #- name: Deploy Microservice
-      #  run: ./scripts/deploy.sh
-      #  continue-on-error: false  # Fails if the deployment fails
+      - name: Deploy Microservice
+        run: ./scripts/deploy.sh
+        continue-on-error: false  # Fails if the deployment fails
 
       # Optional: Cleanup (commented out, can be used if needed)
       #- name: Delete resources
