@@ -11,11 +11,11 @@ echo $REGISTRY_PW | docker login $CONTAINER_REGISTRY --username $REGISTRY_UN --p
 
 # Build the book_catalog image
 echo "Building book_catalog image..."
-docker buildx build --platform linux/amd64,linux/arm64 -t $CONTAINER_REGISTRY/book_catalog:1 ./book_catalog
+docker build -t $CONTAINER_REGISTRY/book_catalog:1 ./book_catalog
 
 # Build the inventory_management image
 echo "Building inventory_management image..."
-docker buildx build --platform linux/amd64,linux/arm64 -t $CONTAINER_REGISTRY/inventory_management:1 ./inventory_management
+docker build -t $CONTAINER_REGISTRY/inventory_management:1 ./inventory_management
 
 # Print success message
 echo "Docker images built successfully!"
