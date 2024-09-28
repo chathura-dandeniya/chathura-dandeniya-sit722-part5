@@ -123,9 +123,9 @@ jobs:
         continue-on-error: false  # Fails if the push fails
 
       # Deploy the microservice to Kubernetes
-      - name: Deploy Microservice
-        run: ./scripts/deploy.sh
-        continue-on-error: false  # Fails if the deployment fails
+     # - name: Deploy Microservice
+     #   run: ./scripts/deploy.sh
+     #   continue-on-error: false  # Fails if the deployment fails
 
       # Optional: Cleanup (commented out, can be used if needed)
       #- name: Delete resources
