@@ -87,13 +87,13 @@ jobs:
         continue-on-error: false  # Fails if cluster info can't be fetched
 
       # Capture Terraform Outputs
-      - name: Capture Terraform Outputs
-        id: tf_output
-        run: |
-          echo "CONTAINER_REGISTRY=$(terraform output -raw registry_login_server)" >> $GITHUB_ENV
-          echo "REGISTRY_UN=$(terraform output -raw registry_username)" >> $GITHUB_ENV
-          echo "REGISTRY_PW=$(terraform output -raw registry_password)" >> $GITHUB_ENV
-        continue-on-error: false  # Fails if output capture fails
+      #- name: Capture Terraform Outputs
+      #  id: tf_output
+      #  run: |
+      #    echo "CONTAINER_REGISTRY=$(terraform output -raw registry_login_server)" >> $GITHUB_ENV
+      #    echo "REGISTRY_UN=$(terraform output -raw registry_username)" >> $GITHUB_ENV
+      #    echo "REGISTRY_PW=$(terraform output -raw registry_password)" >> $GITHUB_ENV
+      #  continue-on-error: false  # Fails if output capture fails
 
       # Set environment variables dynamically from GitHub Secrets
       #- name: Set Container Registry Environment Variables
