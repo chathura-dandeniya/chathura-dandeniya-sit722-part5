@@ -20,7 +20,7 @@ spec:
         - containerPort: 8001
         env:
         - name: DATABASE_URL
-          value: postgresql://librarypart05_user:HWKfpdZlCLZU0yDnkXSUzyj76PXEfYGg@dpg-crkdq03v2p9s73b5s4p0-a.oregon-postgres.render.com/librarypart05 # Update with correct DB URL
+          value: postgresql://librarypart05_jhl4_user:wFnl9yYr71IwSXnwHMkh1QrFux1cWYit@dpg-crrm4i56l47c73cl6e4g-a.oregon-postgres.render.com/librarypart05_jhl4 # Update with correct DB URL
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -43,7 +43,7 @@ spec:
         - containerPort: 8002
         env:
         - name: DATABASE_URL
-          value: postgresql://librarypart05_user:HWKfpdZlCLZU0yDnkXSUzyj76PXEfYGg@dpg-crkdq03v2p9s73b5s4p0-a.oregon-postgres.render.com/librarypart05  # Update with correct DB URL
+          value: postgresql://librarypart05_jhl4_user:wFnl9yYr71IwSXnwHMkh1QrFux1cWYit@dpg-crrm4i56l47c73cl6e4g-a.oregon-postgres.render.com/librarypart05_jhl4  # Update with correct DB URL
 ---
 apiVersion: v1
 kind: Service
